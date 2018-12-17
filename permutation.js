@@ -1,14 +1,16 @@
 var permu_n = 0; //当前输入的位数
+var fac = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]; 
+
 
 function show() {
-    var a = document.getElementById('input').value;
-    if (!check_valid(a))
-        alert("invalid permutation")
+    //var a = document.getElementById('input').value;
+    //if (!check_valid(a))
+    //    alert("invalid permutation")
 	//var tmp = get_intermediary('dictionary', a);
 	//console.log(tmp);
 	//console.log(get_next_intermediary(tmp, 'inc', -3));
-	console.log(next_permutation_swap(a, 1));
-	
+	var a = "839647521";
+	console.log(get_index_des(a));
 }
 
 
@@ -28,20 +30,52 @@ function check_valid() {
     document.getElementById("invalid").style.display = "none";
 }
 
+//全排列 -> 序数
 function get_index_dic(n) {
-    return 0;
-}
-
-function get_index_swap(n) {
-    return 0;
+	var inter = get_intermediary_dic(n);
+	let N = n.length;
+	let index = 0;
+	for(let i = 0; i < N-1; i++) {
+		index += parseInt(inter[i]) * fac[N-1-i];
+	}
+    return index;
 }
 
 function get_index_inc(n) {
-    return 0;
+    var inter = get_intermediary_inc(n);
+	let N = n.length;
+	let index = 0;
+	for(let i = 0; i < N-1; i++) {
+		index += parseInt(inter[i]) * fac[N-1-i];
+	}
+    return index;
 }
 
 function get_index_des(n) {
-    return 0;
+    var inter = get_intermediary_des(n);
+	let N = n.length;
+	let c = 3;
+	let index = parseInt(inter[0]) * c;
+	for(let i = 1; i < N-2; i++) {
+		c++;
+		index = (index + parseInt(inter[i])) * c;
+	}
+	index += parseInt(inter[N-2]);
+    return index;
+}
+
+function get_index_swap(n) {
+    var inter = get_intermediary_swap(n);
+	console.log(inter);
+	let N = n.length;
+	let c = 3;
+	let index = parseInt(inter[0]) * c;
+	for(let i = 1; i < N-2; i++) {
+		c++;
+		index = (index + parseInt(inter[i])) * c;
+	}
+	index += parseInt(inter[N-2]);
+    return index;
 }
 
 function get_index(algorithm, n) {
@@ -58,6 +92,8 @@ function get_index(algorithm, n) {
 
 }
 
+
+//全排列 -> 中介数
 function get_intermediary_dic(n) {
 	var inter = new Array(n.length - 1);
 	for(let i = 0; i < n.length; i++) {
@@ -149,46 +185,9 @@ function get_intermediary(algorithm, n) {
 }
 
 
-function get_next_intermediary(intermediary, mode, step=1) { //mode='inc'或'des'，决定是递增进位制数还是递减。step表示得到之后第几个中介数，取负数代表之前的第几个中介数
-	let m = intermediary.length;  //中介数的长度m = N-1，N是全排列的长度
-	let N = m + 1;
-	var inter = intermediary.split('').reverse();
-	for(let i = 0; i < m; i++) inter[i] = parseInt(inter[i], 10);
-	var carry = new Array(N);
-	if(mode === 'inc') {
-		for(let i = 0; i < N; i++) carry[i] = i + 1;
-	} else if (mode === 'des') {
-		for(let i = 0; i < N; i++) carry[i] = N + 1 - i;
-	}
-	if(step > 0) {
-		for(let l = 0; l < step; l++) {		
-			inter[0]++;
-			let i = 0;
-			while(inter[i] == carry[i+1]) {
-				inter[i] = 0;
-				inter[i+1]++;
-				i++;
-			}
-		}
-	} else if(step < 0) {
-		for(let l = 0; l < -step; l++) {
-			inter[0]--;
-			let i = 0;
-			while(inter[i] < 0){
-				inter[i] += carry[i+1];
-				inter[i+1]--;
-				i++;
-			}
-			console.log(inter);
-		}
-	}
-	return inter.reverse().join('');
-}
-
-function next_permutation_dic(n, step=1) {
-    var intermediary = get_intermediary_dic(n);
-	var inter = get_next_intermediary(intermediary, 'inc', step);
-	var N = n.length;
+// 中介数 -> 全排列
+function intermediary_to_permutation_dic(inter) {
+	var N = inter.length+1;
 	var p = new Array(N);
 	var u = new Array(N);  //记录每一个数字是否已存在于排列中
 	u.fill(0);
@@ -214,10 +213,8 @@ function next_permutation_dic(n, step=1) {
 	return p.join('');
 }
 
-function next_permutation_inc(n, step=1) {
-    var intermediary = get_intermediary_inc(n);
-	var inter = get_next_intermediary(intermediary, 'inc', step);
-	var N = n.length;
+function intermediary_to_permutation_inc(inter) {
+	var N = inter.length + 1;
 	var p = new Array(N);
 	p.fill(0);
 	for(let i = 0; i < N-1; i++) {
@@ -240,10 +237,8 @@ function next_permutation_inc(n, step=1) {
 	return p.join('');
 }
 
-function next_permutation_des(n, step=1) {
-    var intermediary = get_intermediary_des(n);
-	var inter = get_next_intermediary(intermediary, 'des', step);
-	var N = n.length;
+function intermediary_to_permutation_des(inter) {
+	var N = inter.length + 1;
 	var p = new Array(N);
 	p.fill(0);
 	for(let i = N-2; i >= 0; i--) {
@@ -265,10 +260,8 @@ function next_permutation_des(n, step=1) {
 	return p.join('');
 }
 
-function next_permutation_swap(n, step=1) {
-    var intermediary = get_intermediary_swap(n);
-	var inter = get_next_intermediary(intermediary, 'des', step);
-	var N = n.length;
+function intermediary_to_permutation_swap(inter) { 
+	var N = inter.length + 1;
 	var p = new Array(N);
 	p.fill(0);
 	for(let k = N; k > 1; k--) {
@@ -323,6 +316,68 @@ function next_permutation_swap(n, step=1) {
 	return p.join('');
 }
 
+
+// 全排列 -> 之后第step个全排列
+function get_next_intermediary(intermediary, mode, step=1) { //mode='inc'或'des'，决定是递增进位制数还是递减。step表示得到之后第几个中介数，取负数代表之前的第几个中介数
+	let m = intermediary.length;  //中介数的长度m = N-1，N是全排列的长度
+	let N = m + 1;
+	var inter = intermediary.split('').reverse();
+	for(let i = 0; i < m; i++) inter[i] = parseInt(inter[i], 10);
+	var carry = new Array(N);
+	if(mode === 'inc') {
+		for(let i = 0; i < N; i++) carry[i] = i + 1;
+	} else if (mode === 'des') {
+		for(let i = 0; i < N; i++) carry[i] = N + 1 - i;
+	}
+	if(step > 0) {
+		for(let l = 0; l < step; l++) {		
+			inter[0]++;
+			let i = 0;
+			while(inter[i] == carry[i+1]) {
+				inter[i] = 0;
+				inter[i+1]++;
+				i++;
+			}
+		}
+	} else if(step < 0) {
+		for(let l = 0; l < -step; l++) {
+			inter[0]--;
+			let i = 0;
+			while(inter[i] < 0){
+				inter[i] += carry[i+1];
+				inter[i+1]--;
+				i++;
+			}
+			console.log(inter);
+		}
+	}
+	return inter.reverse().join('');
+}
+
+function next_permutation_dic(n, step=1) {
+    var intermediary = get_intermediary_dic(n);
+	var next_inter = get_next_intermediary(intermediary, 'inc', step);
+	return intermediary_to_permutation_dic(next_inter);
+}
+
+function next_permutation_inc(n, step=1) {
+    var intermediary = get_intermediary_inc(n);
+	var next_inter = get_next_intermediary(intermediary, 'inc', step);
+	return intermediary_to_permutation_inc(next_inter);
+}
+
+function next_permutation_des(n, step=1) {
+    var intermediary = get_intermediary_des(n);
+	var next_inter = get_next_intermediary(intermediary, 'des', step);
+	return intermediary_to_permutation_des(next_inter);
+}
+
+function next_permutation_swap(n, step=1) {
+    var intermediary = get_intermediary_swap(n);
+	var next_inter = get_next_intermediary(intermediary, 'des', step);
+	return intermediary_to_permutation_swap(next_inter);
+}
+
 function next_permutation(algorithm, n, step=1) {
     switch (algorithm) {
         case 'dictionary':
@@ -335,6 +390,9 @@ function next_permutation(algorithm, n, step=1) {
             return next_permutation_swap(n, step);
     }
 }
+
+
+
 
 
 function get_permutation(algorithm) {
