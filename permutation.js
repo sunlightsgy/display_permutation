@@ -19,11 +19,13 @@ function check_valid() {
     permu_n = a.length;
     if (a.length === 0){
         document.getElementById("invalid").style.display = "none";
-        return;
+		reset_all();
+		return;
     }
     for (let i = 1; i <= a.length; i++) {
         if(a.indexOf(parseInt(i, 10)) === -1){
             document.getElementById("invalid").style.display = "block";
+            reset_all();
             return;
         }
     }
@@ -40,6 +42,17 @@ function update_all(a) {
 	document.getElementById('index_inc').value = get_index_inc(a);
 	document.getElementById('index_des').value = get_index_des(a);
 	document.getElementById('index_swap').value = get_index_swap(a);
+}
+
+function reset_all() {
+	document.getElementById('mid_dic').value = '';
+	document.getElementById('mid_inc').value = '';
+	document.getElementById('mid_des').value = '';
+	document.getElementById('mid_swap').value = '';
+	document.getElementById('index_dic').value = '';
+	document.getElementById('index_inc').value = '';
+	document.getElementById('index_des').value = '';
+	document.getElementById('index_swap').value = '';
 }
 
 //全排列 -> 序数
