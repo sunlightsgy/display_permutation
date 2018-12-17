@@ -79,6 +79,7 @@ body {
 
 .Input {
     position: relative;
+    padding-top: 20px;
 }
 
 .Input-text {
@@ -96,6 +97,11 @@ body {
     transition: box-shadow var(--transitionDuration);
 }
 
+.Next-text{
+    margin: 0;
+
+}
+
 .Input-text::placeholder {
     color: #B0BEC5;
 }
@@ -107,7 +113,6 @@ body {
 
 .Input-label {
     display: block;
-    position: absolute;
     bottom: 50%;
     left: 1rem;
     color: #fff;
@@ -124,6 +129,25 @@ body {
             opacity var(--inputTransitionDuration) var(--inputTransitionTF),
             transform var(--inputTransitionDuration) var(--inputTransitionTF),
             visibility 0ms var(--inputTransitionDuration) var(--inputTransitionTF),
+            z-index 0ms var(--inputTransitionDuration) var(--inputTransitionTF);
+}
+
+.Title-label {
+    display: block;
+
+    left: 1rem;
+    color: #fff;
+    font-size: var(--inputFontSize);
+    line-height: var(--inputLineHeight);
+    font-family: inherit;
+    font-weight: inherit;
+    transform:
+            translate3d(0, var(--labelDefaultPosY), 0)
+            scale(1);
+    transform-origin: 0 0;
+    transition:
+            opacity var(--inputTransitionDuration) var(--inputTransitionTF),
+            transform var(--inputTransitionDuration) var(--inputTransitionTF),
             z-index 0ms var(--inputTransitionDuration) var(--inputTransitionTF);
 }
 
