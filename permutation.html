@@ -4,16 +4,65 @@
     <meta charset="UTF-8">
     <title>Permutation Generator</title>
     <link href='permutation.css' rel='stylesheet'>
+    <script src="jquery.js"></script>
     <script src="permutation.js"></script>
 </head>
-<body>
+<body id="body">
 <div class="Wrapper">
-    <h1 class="Title">Input a Permutation</h1>
-    <div class="Input">
-        <input type="text" id="input" class="Input-text" placeholder="A valid permutation">
-        <label for="input" class="Input-label">Permutation</label>
+    <h1 class="Title" id="title">排列转换</h1>
+    <table>
+        <tr>
+            <th><label class="Title-label">排列数</label></th>
+            <th><label class="Title-label">字典序中介数</label></th>
+            <th><label class="Title-label">递增中介数</label></th>
+            <th><label class="Title-label">递减中介数</label></th>
+            <th><label class="Title-label">邻位中介数</label></th>
+
+        </tr>
+        <tr>
+            <td>
+                <div class="Input">
+                    <input type="text" id="input" class="Input-text" placeholder="有效排列数" onkeyup="check_valid()">
+                </div>
+
+            </td>
+            <td>
+                <div class="Input">
+                    <input type="text" id="mid_dic" class="Input-text"  onkeyup="get_permutation('dic')">
+                </div>
+            </td>
+            <td>
+                <div class="Input">
+                    <input type="text" id="mid_inc" class="Input-text"  onkeyup="get_permutation('inc')">
+                </div>
+            </td>
+            <td>
+                <div class="Input">
+                    <input type="text" id="mid_des" class="Input-text"  onkeyup="get_permutation('des')">
+                </div>
+            </td>
+            <td>
+                <div class="Input">
+                    <input type="text" id="mid_swap" class="Input-text"  onkeyup="get_permutation('swap')">
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="next" style="display: none;">
+        <label class="Title-label">中介数</label>
+
+        <p>字典序法：</p>
+        <p>递增进位制法：</p>
+        <p>递减进位制法：</p>
+        <p>邻位交换法：</p>
     </div>
-    <button id="go" type="button" value="Go" onclick="show()">Go</button>
+    <div id="inter" style="display:none;">
+        <label class="Title-label"></label>
+    </div>
+    <div id="invalid" align="center" style="display: none">
+        <p style="color: red">Invalid Permutation Number!</p>
+    </div>
+
 </div>
 
 </body>
