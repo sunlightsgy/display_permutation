@@ -14,25 +14,18 @@ function show() {
 
 function check_valid() {
     var a = document.getElementById('input').value;
-    document.getElementById("title").style.display = "none";
     permu_n = a.length;
     if (a.length === 0){
-        document.getElementById("next").style.display = "none";
         document.getElementById("invalid").style.display = "none";
-        document.getElementById("title").style.display = "block";
         return;
     }
     for (let i = 1; i <= a.length; i++) {
         if(a.indexOf(parseInt(i, 10)) === -1){
-            document.getElementById("next").style.display = "none";
             document.getElementById("invalid").style.display = "block";
-            document.getElementById("title").style.display = "block";
-
             return;
         }
     }
     document.getElementById("invalid").style.display = "none";
-    document.getElementById("next").style.display = "block";
 }
 
 function get_index_dic(n) {

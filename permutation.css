@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Dosis');
+/*@import url('https://fonts.googleapis.com/css?family=Dosis');*/
 
 :root {
     /* generic */
@@ -114,7 +114,7 @@ body {
 .Input-label {
     display: block;
     bottom: 50%;
-    left: 1rem;
+    /*left: 1rem;*/
     color: #fff;
     font-family: inherit;
     font-size: var(--inputFontSize);
@@ -135,7 +135,7 @@ body {
 .Title-label {
     display: block;
 
-    left: 1rem;
+    /*left: 1rem;*/
     color: #fff;
     font-size: var(--inputFontSize);
     line-height: var(--inputLineHeight);
