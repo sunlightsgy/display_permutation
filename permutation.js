@@ -6,16 +6,16 @@ function show() {
     //var a = document.getElementById('input').value;
     //if (!check_valid(a))
     //    alert("invalid permutation")
-	//var tmp = get_intermediary('dictionary', a);
+	//var tmp = perm2inter('dictionary', a);
 	//console.log(tmp);
 	//console.log(get_next_intermediary(tmp, 'inc', -3));
 	var a = "839647521";
-	console.log(get_index_des(a));
+	console.log(perm2index_des(a));
 }
 
 
 function check_valid() {
-    var a = document.getElementById('input').value;
+    const a = document.getElementById('input').value;
     permu_n = a.length;
     if (a.length === 0){
         document.getElementById("invalid").style.display = "none";
@@ -30,18 +30,19 @@ function check_valid() {
         }
     }
     document.getElementById("invalid").style.display = "none";
-    update_all(a);
+    update_all(a, 'input');
 }
 
-function update_all(a) {
-	document.getElementById('mid_dic').value = get_intermediary_dic(a);
-	document.getElementById('mid_inc').value = get_intermediary_inc(a);
-	document.getElementById('mid_des').value = get_intermediary_des(a);
-	document.getElementById('mid_swap').value = get_intermediary_swap(a);
-	document.getElementById('index_dic').value = get_index_dic(a);
-	document.getElementById('index_inc').value = get_index_inc(a);
-	document.getElementById('index_des').value = get_index_des(a);
-	document.getElementById('index_swap').value = get_index_swap(a);
+function update_all(perm, elem) {
+    document.getElementById('mid_dic').value = perm2inter_dic(perm);
+	document.getElementById('mid_inc').value = perm2inter_inc(perm);
+	document.getElementById('mid_des').value = perm2inter_des(perm);
+	document.getElementById('mid_swap').value = perm2inter_swap(perm);
+	document.getElementById('index_dic').value = perm2index_dic(perm).toString(10);
+	document.getElementById('index_inc').value = perm2index_inc(perm).toString(10);
+	document.getElementById('index_des').value = perm2index_des(perm).toString(10);
+	document.getElementById('index_swap').value = perm2index_swap(perm).toString(10);
+	document.getElementById(elem).value = perm;
 }
 
 function reset_all() {
@@ -56,9 +57,9 @@ function reset_all() {
 }
 
 //全排列 -> 序数
-function get_index_dic(n) {
-	var inter = get_intermediary_dic(n);
-	let N = n.length;
+function perm2index_dic(n) {
+    const inter = perm2inter_dic(n);
+    let N = n.length;
 	let index = 0;
 	for(let i = 0; i < N-1; i++) {
 		index += parseInt(inter[i]) * fac[N-1-i];
@@ -66,9 +67,9 @@ function get_index_dic(n) {
     return index;
 }
 
-function get_index_inc(n) {
-    var inter = get_intermediary_inc(n);
-	let N = n.length;
+function perm2index_inc(n) {
+    const inter = perm2inter_inc(n);
+    let N = n.length;
 	let index = 0;
 	for(let i = 0; i < N-1; i++) {
 		index += parseInt(inter[i]) * fac[N-1-i];
@@ -76,8 +77,22 @@ function get_index_inc(n) {
     return index;
 }
 
-function get_index_des(n) {
-    var inter = get_intermediary_des(n);
+function perm2index_des(n) {
+    const inter = perm2inter_des(n);
+    let N = n.length;
+	let c = 3;
+	let index = parseInt(inter[0]) * c;
+	for(let i = 1; i < N-2; i++) {
+		c++;
+		index = (index + parseInt(inter[i])) * c;
+	}
+	index += parseInt(inter[N-2]);
+    return index;
+}
+
+function perm2index_swap(n) {
+    const inter = perm2inter_swap(n);
+    console.log(inter);
 	let N = n.length;
 	let c = 3;
 	let index = parseInt(inter[0]) * c;
@@ -89,37 +104,49 @@ function get_index_des(n) {
     return index;
 }
 
-function get_index_swap(n) {
-    var inter = get_intermediary_swap(n);
-	console.log(inter);
-	let N = n.length;
-	let c = 3;
-	let index = parseInt(inter[0]) * c;
-	for(let i = 1; i < N-2; i++) {
-		c++;
-		index = (index + parseInt(inter[i])) * c;
-	}
-	index += parseInt(inter[N-2]);
-    return index;
+function index2perm_dic(n) {
+    //TODO
+    return undefined;
 }
 
-function get_index(algorithm, n) {
+function index2perm_inc(n) {
+    //TODO
+    return undefined;
+}
+
+function index2perm_des(n) {
+    //TODO
+    return undefined;
+}
+
+function index2perm_swap(n) {
+    //TODO
+    return undefined;
+}
+
+function indexed(algorithm, n) {
+    var ret;
     switch (algorithm) {
-        case 'dictionary':
-            return get_index_dic(n);
-        case 'increment':
-            return get_index_inc(n);
-        case 'descend':
-            return get_index_des(n);
+        case 'dic':
+            ret = index2perm_dic(n);
+            break;
+        case 'inc':
+            ret = index2perm_inc(n);
+            break;
+        case 'des':
+            ret = index2perm_des(n);
+            break;
         case 'swap':
-            return get_index_swap(n);
+            ret = index2perm_swap(n);
+            break;
     }
-
+    update_all(ret.toString, 'index_'+algorithm);
+    document.getElementById('input').value = ret.toString;
 }
 
 
 //全排列 -> 中介数
-function get_intermediary_dic(n) {
+function perm2inter_dic(n) {
 	var inter = new Array(n.length - 1);
 	for(let i = 0; i < n.length; i++) {
 		let num = parseInt(n[i], 10);
@@ -133,7 +160,7 @@ function get_intermediary_dic(n) {
 	return inter.join('');
 }
 
-function get_intermediary_inc(n) {
+function perm2inter_inc(n) {
 	var inter = new Array(n.length - 1);
 	for(let i = 0; i < n.length; i++) {
 		let num = parseInt(n[i], 10);
@@ -147,7 +174,7 @@ function get_intermediary_inc(n) {
 	return inter.join('');
 }
 
-function get_intermediary_des(n) {
+function perm2inter_des(n) {
 	var inter = new Array(n.length - 1);
 	for(let i = 0; i < n.length; i++) {
 		let num = parseInt(n[i], 10);
@@ -161,9 +188,9 @@ function get_intermediary_des(n) {
 	return inter.join('');
 }
 
-function get_intermediary_swap(n) {
+function perm2inter_swap(n) {
     var directions = new Array(n.length + 1);
-	directions.fill(0);	 //0代表方向朝左，1代表朝右
+    directions.fill(0);	 //0代表方向朝左，1代表朝右
 	var N = n.length;
 	var inter = new Array(N - 1);
 	var pos = new Array(N + 1);
@@ -179,10 +206,10 @@ function get_intermediary_swap(n) {
 			if(bk_1 % 2 === 1) directions[k] = 1;
 		} else {
 			let bk_2 = inter[k-3];
-			if((bk_1 + bk_2) % 2 == 1) directions[k] = 1;
+			if((bk_1 + bk_2) % 2 === 1) directions[k] = 1;
 		}
 		let cnt = 0;
-		if(directions[k] == 1) {
+		if(directions[k] === 1) {
 			for(let j = 0; j < pos[k]; j++) {
 				if(parseInt(n[j]) < k) cnt++;
 			}
@@ -196,22 +223,22 @@ function get_intermediary_swap(n) {
 	return inter.join('');
 }
 
-function get_intermediary(algorithm, n) {
+function perm2inter(algorithm, n) {
     switch (algorithm) {
         case 'dictionary':
-            return get_intermediary_dic(n);
+            return perm2inter_dic(n);
         case 'increment':
-            return get_intermediary_inc(n);
+            return perm2inter_inc(n);
         case 'descend':
-            return get_intermediary_des(n);
+            return perm2inter_des(n);
         case 'swap':
-            return get_intermediary_swap(n);
+            return perm2inter_swap(n);
     }
 }
 
 
 // 中介数 -> 全排列
-function intermediary_to_permutation_dic(inter) {
+function inter2perm_dic(inter) {
 	var N = inter.length+1;
 	var p = new Array(N);
 	var u = new Array(N);  //记录每一个数字是否已存在于排列中
@@ -221,7 +248,7 @@ function intermediary_to_permutation_dic(inter) {
 		let cnt = 0;
 		for(let j = 0; j < N; j++) {
 			if(!u[j]) cnt++;
-			if(cnt == a + 1) {
+			if(cnt === a + 1) {
 				p[i] = (j+1).toString();
 				u[j] = true;
 				break;
@@ -238,15 +265,15 @@ function intermediary_to_permutation_dic(inter) {
 	return p.join('');
 }
 
-function intermediary_to_permutation_inc(inter) {
+function inter2perm_inc(inter) {
 	var N = inter.length + 1;
 	var p = new Array(N);
 	p.fill(0);
 	for(let i = 0; i < N-1; i++) {
 		let cnt = 0;
 		for(let j = N-1; j >= 0; j--) {
-			if(p[j] == 0) cnt++;
-			if(cnt == parseInt(inter[i]) + 1) {
+			if(p[j] === 0) cnt++;
+			if(cnt === parseInt(inter[i]) + 1) {
 				p[j] = (N-i).toString();
 				break;
 				
@@ -254,7 +281,7 @@ function intermediary_to_permutation_inc(inter) {
 		}
 	}
 	for(let j = N-1; j >= 0; j--) {
-		if(p[j] == 0) {
+		if(p[j] === 0) {
 			p[j] = '1';
 			break;
 		}
@@ -262,7 +289,7 @@ function intermediary_to_permutation_inc(inter) {
 	return p.join('');
 }
 
-function intermediary_to_permutation_des(inter) {
+function inter2perm_des(inter) {
 	var N = inter.length + 1;
 	var p = new Array(N);
 	p.fill(0);
@@ -270,7 +297,7 @@ function intermediary_to_permutation_des(inter) {
 		let cnt = 0;
 		for(let j = N-1; j >= 0; j--) {
 			if(p[j] === 0) cnt++;
-			if(cnt == parseInt(inter[i]) + 1) {
+			if(cnt === parseInt(inter[i]) + 1) {
 				p[j] = (i+2).toString();
 				break;
 			}
@@ -285,7 +312,7 @@ function intermediary_to_permutation_des(inter) {
 	return p.join('');
 }
 
-function intermediary_to_permutation_swap(inter) { 
+function inter2perm_swap(inter) {
 	var N = inter.length + 1;
 	var p = new Array(N);
 	p.fill(0);
@@ -293,10 +320,10 @@ function intermediary_to_permutation_swap(inter) {
 		let bk = parseInt(inter[k-2]);
 		let bk_1 = parseInt(inter[k-3]);
 		let cnt = 0;
-		if(k % 2 == 1) {
-			if(bk_1 % 2 == 1) {
+		if(k % 2 === 1) {
+			if(bk_1 % 2 === 1) {
 				for(let j = 0; j < N; j++) {
-					if(p[j] == 0) cnt++;
+					if(p[j] === 0) cnt++;
 					if(cnt === bk + 1) {
 						p[j] = k.toString();
 						break;
@@ -304,7 +331,7 @@ function intermediary_to_permutation_swap(inter) {
 				}
 			} else {
 				for(let j = N-1; j >= 0; j--) {
-					if(p[j] == 0) cnt++;
+					if(p[j] === 0) cnt++;
 					if(cnt === bk + 1) {
 						p[j] = k.toString();
 						break;
@@ -313,9 +340,9 @@ function intermediary_to_permutation_swap(inter) {
 			}
 		} else {
 			let bk_2 = parseInt(inter[k-4]);
-			if((bk_1 + bk_2) % 2 == 1) {
+			if((bk_1 + bk_2) % 2 === 1) {
 				for(let j = 0; j < N; j++) {
-					if(p[j] == 0) cnt++;
+					if(p[j] === 0) cnt++;
 					if(cnt === bk + 1) {
 						p[j] = k.toString();
 						break;
@@ -323,7 +350,7 @@ function intermediary_to_permutation_swap(inter) {
 				}
 			} else {
 				for(let j = N-1; j >= 0; j--) {
-					if(p[j] == 0) cnt++;
+					if(p[j] === 0) cnt++;
 					if(cnt === bk + 1) {
 						p[j] = k.toString();
 						break;
@@ -358,7 +385,7 @@ function get_next_intermediary(intermediary, mode, step=1) { //mode='inc'或'des
 		for(let l = 0; l < step; l++) {		
 			inter[0]++;
 			let i = 0;
-			while(inter[i] == carry[i+1]) {
+			while(inter[i] === carry[i+1]) {
 				inter[i] = 0;
 				inter[i+1]++;
 				i++;
@@ -380,36 +407,36 @@ function get_next_intermediary(intermediary, mode, step=1) { //mode='inc'或'des
 }
 
 function next_permutation_dic(n, step=1) {
-    var intermediary = get_intermediary_dic(n);
+    var intermediary = perm2inter_dic(n);
 	var next_inter = get_next_intermediary(intermediary, 'inc', step);
-	return intermediary_to_permutation_dic(next_inter);
+	return inter2perm_dic(next_inter);
 }
 
 function next_permutation_inc(n, step=1) {
-    var intermediary = get_intermediary_inc(n);
+    var intermediary = perm2inter_inc(n);
 	var next_inter = get_next_intermediary(intermediary, 'inc', step);
-	return intermediary_to_permutation_inc(next_inter);
+	return inter2perm_inc(next_inter);
 }
 
 function next_permutation_des(n, step=1) {
-    var intermediary = get_intermediary_des(n);
+    var intermediary = perm2inter_des(n);
 	var next_inter = get_next_intermediary(intermediary, 'des', step);
-	return intermediary_to_permutation_des(next_inter);
+	return inter2perm_des(next_inter);
 }
 
 function next_permutation_swap(n, step=1) {
-    var intermediary = get_intermediary_swap(n);
+    var intermediary = perm2inter_swap(n);
 	var next_inter = get_next_intermediary(intermediary, 'des', step);
-	return intermediary_to_permutation_swap(next_inter);
+	return inter2perm_swap(next_inter);
 }
 
 function next_permutation(algorithm, n, step=1) {
     switch (algorithm) {
-        case 'dictionary':
+        case 'dic':
             return next_permutation_dic(n, step);
-        case 'increment':
+        case 'inc':
             return next_permutation_inc(n, step);
-        case 'descend':
+        case 'des':
             return next_permutation_des(n, step);
         case 'swap':
             return next_permutation_swap(n, step);
@@ -420,49 +447,36 @@ function next_permutation(algorithm, n, step=1) {
 
 
 
-function get_permutation(algorithm) {
+function inter(algorithm) {
     var ret;
-    var n = document.getElementById('mid_'+algorithm).value;
+    var mid = document.getElementById('mid_'+algorithm).value;
+    if(mid.length === 0){
+        reset_all();
+        document.getElementById('input').value = '';
+        return;
+    }
+    if(!check_valid_inter(mid)){
+        return;
+    }
     switch (algorithm) {
         case 'dic':
-            ret = get_permutation_dic(n, permu_n);
+            ret = inter2perm_dic(mid);
             break;
         case 'inc':
-            ret = get_permutation_inc(n, permu_n);
+            ret = inter2perm_inc(mid);
             break;
         case 'des':
-            ret = get_permutation_des(n, permu_n);
+            ret = inter2perm_des(mid);
             break;
         case 'swap':
-            ret = get_permutation_swap(n, permu_n);
+            ret = inter2perm_swap(mid);
             break;
     }
     console.log(ret);
+    update_all(ret.toString(10), 'mid_'+algorithm);
     document.getElementById('input').value = ret.toString(10);
-    document.getElementById('mid_dic').value = get_index_dic(ret).toString(10);
-    document.getElementById('mid_inc').value = get_index_inc(ret).toString(10);
-    document.getElementById('mid_des').value = get_index_inc(ret).toString(10);
-    document.getElementById('mid_swap').value = get_index_inc(ret).toString(10);
 }
 
-function get_permutation_dic(n, permu_n) {
-    console.log('dic');
-    return 0;
-
-}
-
-function get_permutation_inc(n, permu_n) {
-    console.log('inc');
-    return 0;
-
-}
-function get_permutation_des(n, permu_n) {
-    console.log('des');
-    return 0;
-
-}
-function get_permutation_swap(n, permu_n) {
-    console.log('swap');
-    return 0;
-
+function check_valid_inter() {
+    //TODO
 }
