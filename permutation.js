@@ -126,6 +126,11 @@ function index2perm_swap(n) {
 
 function indexed(algorithm, index) {
     var ret;
+	if(index.length === 0){
+		reset_all();
+		document.getElementById('input').value = '';
+		return;
+	}
 	if(!check_valid_index(index)){
 		return;
 	}
