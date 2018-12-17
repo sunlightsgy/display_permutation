@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <td>
-                    <div class="Input"><input type="number" id="input" class="Input-text" onkeyup="check_valid()"></div>
+                    <div class="Input"><input type="text" id="input" class="Input-text" onkeyup="check_valid_perm()"></div>
                 </td>
             </tr>
         </table>
@@ -64,22 +64,22 @@
         <tr>
             <td>
                 <div class="Input">
-                    <input type="number" id="index_dic" class="Input-text" onkeyup="indexed('dic')">
+                    <input type="number" id="index_dic" class="Input-text" onchange="indexed('dic')" onkeyup="indexed('dic')">
                 </div>
             </td>
             <td>
                 <div class="Input">
-                    <input type="number" id="index_inc" class="Input-text" onkeyup="indexed('inc')">
+                    <input type="number" id="index_inc" class="Input-text" onchange="indexed('inc')" onkeyup="indexed('inc')">
                 </div>
             </td>
             <td>
                 <div class="Input">
-                    <input type="number" id="index_des" class="Input-text" onkeyup="indexed('des')">
+                    <input type="number" id="index_des" class="Input-text" onchange="indexed('des')" onkeyup="indexed('des')">
                 </div>
             </td>
             <td>
                 <div class="Input">
-                    <input type="number" id="index_swap" class="Input-text" onkeyup="indexed('swap')">
+                    <input type="number" id="index_swap" class="Input-text" onchange="indexed('swap')" onkeyup="indexed('swap')">
                 </div>
             </td>
         </tr>

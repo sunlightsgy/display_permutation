@@ -14,7 +14,7 @@ function show() {
 }
 
 
-function check_valid() {
+function check_valid_perm() {
     const a = document.getElementById('input').value;
     permu_n = a.length;
     if (a.length === 0){
@@ -124,20 +124,23 @@ function index2perm_swap(n) {
     return undefined;
 }
 
-function indexed(algorithm, n) {
+function indexed(algorithm, index) {
     var ret;
+	if(!check_valid_index(index)){
+		return;
+	}
     switch (algorithm) {
         case 'dic':
-            ret = index2perm_dic(n);
+            ret = index2perm_dic(index);
             break;
         case 'inc':
-            ret = index2perm_inc(n);
+            ret = index2perm_inc(index);
             break;
         case 'des':
-            ret = index2perm_des(n);
+            ret = index2perm_des(index);
             break;
         case 'swap':
-            ret = index2perm_swap(n);
+            ret = index2perm_swap(index);
             break;
     }
     update_all(ret.toString, 'index_'+algorithm);
