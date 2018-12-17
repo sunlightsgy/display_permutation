@@ -28,6 +28,18 @@ function check_valid() {
         }
     }
     document.getElementById("invalid").style.display = "none";
+    update_all(a);
+}
+
+function update_all(a) {
+	document.getElementById('mid_dic').value = get_intermediary_dic(a);
+	document.getElementById('mid_inc').value = get_intermediary_inc(a);
+	document.getElementById('mid_des').value = get_intermediary_des(a);
+	document.getElementById('mid_swap').value = get_intermediary_swap(a);
+	document.getElementById('index_dic').value = get_index_dic(a);
+	document.getElementById('index_inc').value = get_index_inc(a);
+	document.getElementById('index_des').value = get_index_des(a);
+	document.getElementById('index_swap').value = get_index_swap(a);
 }
 
 //全排列 -> 序数
