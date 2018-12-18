@@ -11,12 +11,7 @@ function show() {
 	//console.log(get_next_intermediary(tmp, 'inc', -3));
 	//var a = "839647521";
 	//console.log(perm2index_des(a));
-	permu_n = 3;
-	
-	//console.log(index2perm_dic(index));
-	//console.log(index2perm_inc(index));
-	//console.log(index2perm_des(index));
-	//console.log(index2perm_swap(index));
+	//permu_n = 3;
 	
 }
 
@@ -119,7 +114,6 @@ function perm2index_swap(n) {
 		return 0;
 	}
 	const inter = perm2inter_swap(n);
-    console.log(inter);
 	let N = n.length;
 	let index = 0;
 	if(N > 2) {
@@ -137,6 +131,7 @@ function perm2index_swap(n) {
 
 // 序数 -> 全排列
 function index2perm_dic(n) {
+    update_perm_n();
 	var tmp = new Array(permu_n-1);
 	tmp.fill(0);
 	let d = n;
@@ -147,11 +142,11 @@ function index2perm_dic(n) {
 		d = r;
 	}
 	let inter = tmp.join('');
-	console.log(inter);
 	return inter2perm_dic(inter);
 }
 
 function index2perm_inc(n) {
+    update_perm_n();
 	var tmp = new Array(permu_n-1);
 	tmp.fill(0);
 	let d = n;
@@ -162,11 +157,11 @@ function index2perm_inc(n) {
 		d = r;
 	}
 	let inter = tmp.join('');
-	console.log(inter);
 	return inter2perm_inc(inter);
 }
 
 function index2perm_des(n) {
+    update_perm_n();
     var tmp = new Array(permu_n-1);
 	tmp.fill(0);
 	let d = n;
@@ -182,12 +177,12 @@ function index2perm_des(n) {
 		i--;
 	}
 	let inter = tmp.join('');
-    console.log("index", n, "inter", inter);
+    //console.log("index", n, "inter", inter);
 	return inter2perm_des(inter);
 }
 
 function index2perm_swap(n) {
-	//TODO:更新permu_n？
+    update_perm_n();
     var tmp = new Array(permu_n-1);
 	tmp.fill(0);
 	let d = n;
@@ -203,12 +198,13 @@ function index2perm_swap(n) {
 		i--;
 	}
 	let inter = tmp.join('');
-    console.log("index", n, "inter", inter);
+    //console.log("index", n, "inter", inter);
     return inter2perm_swap(inter);
 }
 
-function indexed(algorithm, index) {
+function indexed(algorithm) {
     var ret;
+    var index = document.getElementById('index_'+algorithm).value;
 	if(index.length === 0){
 		reset_all();
 		document.getElementById('input').value = '';
@@ -231,8 +227,8 @@ function indexed(algorithm, index) {
             ret = index2perm_swap(index);
             break;
     }
-    update_all(ret.toString, 'index_'+algorithm);
-    document.getElementById('input').value = ret.toString;
+    update_all(ret.toString(), 'input');//'index_'+algorithm);
+    document.getElementById('input').value = ret.toString();
 }
 
 function check_valid_index(index) {
@@ -514,7 +510,7 @@ function get_next_intermediary(intermediary, mode, step=1) { //mode='inc'或'des
 				inter[i+1]--;
 				i++;
 			}
-			console.log(inter);
+			//console.log(inter);
 		}
 	}
 	return inter.reverse().join('');
@@ -586,8 +582,9 @@ function inter(algorithm) {
             ret = inter2perm_swap(mid);
             break;
     }
-    console.log(ret);
-    update_all(ret.toString(10), 'mid_'+algorithm);
+    //console.log("inter2perm", ret);
+    document.getElementById('perm_n').value = permu_n;
+    update_all(ret.toString(10), 'input'); //'mid_'+algorithm);
     document.getElementById('input').value = ret.toString(10);
 }
 
@@ -599,13 +596,13 @@ function check_valid_inter(mid, algorithm) {
 	var carry = new Array(N);
     var inter = mid.split('').reverse();
 	if(algorithm == 'dic' || algorithm == 'inc') {
-		for(let i = 0; i < N; i++) carry[i] = i + 1;	
+		for(let i = 0; i < N; i++) carry[i] = i + 1;
 	} else if(algorithm == 'des' || algorithm == 'swap') {
 		for(let i = 0; i < N; i++) carry[i] = N + 1 - i;
 	}
 	for(let i = 0; i < N-1; i++) {
-		console.log(mid, inter[i], carry[i]);
-		if(parseInt(inter[i]) >= carry[i]) {
+		//console.log(mid, inter[i], carry[i]);
+		if(parseInt(inter[i]) > carry[i]) {
 			return false;
 		}
 	}
