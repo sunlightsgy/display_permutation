@@ -13,11 +13,15 @@ function show() {
 	console.log(perm2index_des(a));
 }
 
+function update_perm_n() {
+	permu_n = document.getElementById('perm_n').value;
+}
 
 function check_valid_perm() {
-    const a = document.getElementById('input').value;
-    permu_n = a.length;
-    if (a.length === 0){
+	var a = document.getElementById('input').value;
+	permu_n = a.length;
+	document.getElementById('perm_n').value = permu_n;
+	if (a.length === 0){
         document.getElementById("invalid").style.display = "none";
 		reset_all();
 		return;
@@ -46,6 +50,7 @@ function update_all(perm, elem) {
 }
 
 function reset_all() {
+	document.getElementById('perm_n').value = ''
 	document.getElementById('mid_dic').value = '';
 	document.getElementById('mid_inc').value = '';
 	document.getElementById('mid_des').value = '';

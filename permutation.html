@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Permutation Generator</title>
+    <title>Permutation Converter</title>
     <link href='permutation.css' rel='stylesheet'>
-    <script src="jquery.js"></script>
     <script src="permutation.js"></script>
 </head>
 <body id="body">
@@ -14,10 +13,15 @@
         <table>
             <tr>
                 <th><label class="Title-label">排列数</label></th>
+                <th><label class="Title-label">排列位数</label></th>
+
             </tr>
             <tr>
                 <td>
                     <div class="Input"><input type="text" id="input" class="Input-text" onkeyup="check_valid_perm()"></div>
+                </td>
+                <td>
+                    <div class="Input"><input type="text" id="perm_n" class="Input-text" onkeyup="update_perm_n()"></div>
                 </td>
             </tr>
         </table>
