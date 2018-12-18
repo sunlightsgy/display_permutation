@@ -570,6 +570,7 @@ function inter(algorithm) {
     if(mid.length === 0){
         reset_all();
         document.getElementById('input').value = '';
+        document.getElementById("perm_n").value = permu_n;
         return;
     }
     if(!check_valid_inter(mid, algorithm)){
@@ -598,6 +599,12 @@ function inter(algorithm) {
 function check_valid_inter(mid, algorithm) {
 	N = permu_n;
 	if(mid.length != N-1) {	//要求中介数长度必须是N-1，否则用0填补，如0001
+        document.getElementById("invalid").style.display = "block";
+        if (mid.length > N-1){
+            reset_all();
+            document.getElementById("input").value = '';
+            document.getElementById("perm_n").value = permu_n;
+        }
 		return false;
 	}
 	var carry = new Array(N);
@@ -610,8 +617,12 @@ function check_valid_inter(mid, algorithm) {
 	for(let i = 0; i < N-1; i++) {
 		//console.log(mid, inter[i], carry[i]);
 		if(parseInt(inter[i]) > carry[i]) {
-			return false;
+            document.getElementById("invalid").style.display = "block";
+            reset_all();
+            document.getElementById("perm_n").value = permu_n;
+            return false;
 		}
 	}
-	return true;
+    document.getElementById("invalid").style.display = "none";
+    return true;
 }
