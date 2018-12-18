@@ -208,6 +208,8 @@ function indexed(algorithm) {
 	if(index.length === 0){
 		reset_all();
 		document.getElementById('input').value = '';
+		document.getElementById('perm_n').value = permu_n;
+
 		return;
 	}
 	if(!check_valid_index(index)){
@@ -234,7 +236,12 @@ function indexed(algorithm) {
 function check_valid_index(index) {
 	let ind = parseInt(index);
 	let N = permu_n;
-	if(ind >= 0 && ind <= fac[N]-1) return true;
+	if(ind >= 0 && ind <= fac[N]-1) {
+		document.getElementById("invalid").style.display = "none";
+		return true;
+	}
+	document.getElementById("invalid").style.display = "block";
+	reset_all();
 	return false;
 }
 
