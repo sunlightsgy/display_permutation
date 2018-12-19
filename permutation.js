@@ -597,7 +597,7 @@ function inter(algorithm) {
 }
 
 function check_valid_inter(mid, algorithm) {
-	N = permu_n;
+	var N = parseInt(permu_n);
 	if(mid.length != N-1) {	//要求中介数长度必须是N-1，否则用0填补，如0001
         document.getElementById("invalid").style.display = "block";
         if (mid.length > N-1){
@@ -610,13 +610,14 @@ function check_valid_inter(mid, algorithm) {
 	var carry = new Array(N);
     var inter = mid.split('').reverse();
 	if(algorithm == 'dic' || algorithm == 'inc') {
-		for(let i = 0; i < N; i++) carry[i] = i + 1;
+		for(let i = 0; i < N; i++) carry[i] = i + 2;
 	} else if(algorithm == 'des' || algorithm == 'swap') {
-		for(let i = 0; i < N; i++) carry[i] = N + 1 - i;
+        for(let i = 0; i < N; i++) {
+            carry[i] = N - i;
+        }
 	}
 	for(let i = 0; i < N-1; i++) {
-		//console.log(mid, inter[i], carry[i]);
-		if(parseInt(inter[i]) > carry[i]) {
+		if(parseInt(inter[i]) >= carry[i]) {
             document.getElementById("invalid").style.display = "block";
             reset_all();
             document.getElementById("perm_n").value = permu_n;
